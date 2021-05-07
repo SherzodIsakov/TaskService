@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TaskService.Entities\TaskService.Entities.csproj" />
     <ProjectReference Include="..\TaskService.Services\TaskService.Services.csproj" />
   </ItemGroup>
 

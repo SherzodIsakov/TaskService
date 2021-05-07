@@ -9,11 +9,11 @@ namespace TaskService.Client.Configuration
 {
     public static class TextTaskServiceClientConfiguration
     {
-        public static IServiceCollection AddTextServiceClient(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddTaskServiceClient(this IServiceCollection services, IConfiguration configuration)
         {
             services.TryAddTransient(_ => RestService.For<ITaskClient>(new HttpClient()
             {
-                BaseAddress = new Uri(configuration["ServiceUrls:TextService"])
+                BaseAddress = new Uri(configuration["ServiceUrls:FindService"])
             }));
 
             return services;

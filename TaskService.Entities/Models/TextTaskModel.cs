@@ -1,9 +1,8 @@
-﻿using RepositoryBase.Entities;
-using System;
+﻿using System;
 
-namespace TaskService.Repositories.Entities
+namespace TaskService.Entities.Models
 {
-    public class TextTaskEntity : BaseEntity
+    public class TextTaskModel
     {
         public Guid TaskId { get; set; }
         public Guid TextId { get; set; }

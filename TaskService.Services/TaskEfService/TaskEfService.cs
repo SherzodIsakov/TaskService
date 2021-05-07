@@ -1,33 +1,83 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using TaskService.Repositories.Contexts;
+using TaskService.Entities.Models;
 using TaskService.Repositories.Entities;
-using TaskService.Services.Models;
+using TaskService.Repositories.Interfaces;
+using TaskService.Services.Interfaces;
 
 namespace TaskService.Services.TaskEfService
 {
-    public class TaskEfService : ITaskEfService
+    public class TaskEfService : ITaskService
     {
-        private readonly TaskContext _taskContext;
+        private readonly ITextTaskEfRepository _textTaskEfRepository;
+        private readonly ITaskEfRepository _taskEfRepository;
         private readonly IMapper _mapper;
 
-        public TaskEfService(TaskContext taskContext, IMapper mapper)
+        public TaskEfService(
+            ITextTaskEfRepository textTaskEfRepository,
+            ITaskEfRepository taskEfRepository,
+            IMapper mapper)
         {
-            _taskContext = taskContext;
+            _textTaskEfRepository = textTaskEfRepository;
+            _taskEfRepository = taskEfRepository;
             _mapper = mapper;
         }
 
-        public async Task<TextTaskModel> CreateTask(TextTaskModel textTaskModel)
+        #region TaskModel Постановка задачи
+        public async Task<TaskModel> CreateTaskAsync(TaskModel taskModel)
         {
-            var textTask = _mapper.Map<TextTaskEntity>(textTaskModel);
-            await _taskContext.TextTaskEntities.AddAsync(textTask);
-
-            //var tasks = _taskContext.TextTaskEntities.FromSqlRaw($"SELECT * FROM TextTask WHERE id = @id", new { id = Guid.NewGuid() });
-            //await _taskContext.SaveChangesAsync();
-
-            return _mapper.Map<TextTaskModel>(textTask);
+            var taskEntity = new TaskEntity
+            {
+                TaskStartTime = taskModel.TaskStartTime,
+                TaskEndTime = taskModel.TaskEndTime,
+                TaskInterval = taskModel.TaskInterval,
+                FindEntities = taskModel.FindEntities
+            };
+            taskEntity = await _taskEfRepository.CreateAsync(taskEntity);
+            return _mapper.Map<TaskModel>(taskEntity);
         }
+        public async Task<TaskModel> GetTaskByIdAsync(Guid id)
+        {
+            var text = await _taskEfRepository.GetByIdAsync(id);
+
+            return _mapper.Map<TaskModel>(text);
+        }
+        public async Task<IEnumerable<TaskModel>> GetAllTasksAsync()
+        {
+            var text = await _taskEfRepository.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<TaskEntity>, IEnumerable<TaskModel>>(text);
+
+        }
+        #endregion
+
+        #region TextTaskModel Результат поиска
+        public async Task<TextTaskModel> CreateTextTaskAsync(TextTaskModel textTaskModel)
+        {
+            var textTaskEntity = new TextTaskEntity
+            {
+                TaskId = textTaskModel.TaskId,
+                TextId = textTaskModel.TextId,
+                FindindWordsCount = textTaskModel.FindindWordsCount
+            };
+            textTaskEntity = await _textTaskEfRepository.CreateAsync(textTaskEntity);
+            return _mapper.Map<TextTaskModel>(textTaskEntity);
+        }
+        public async Task<TextTaskModel> GetTextTaskByIdAsync(Guid id)
+        {
+            var text = await _textTaskEfRepository.GetByIdAsync(id);
+
+            return _mapper.Map<TextTaskModel>(text);
+        }
+        public async Task<IEnumerable<TextTaskModel>> GetAllTextTasksAsync()
+        {
+            var text = await _textTaskEfRepository.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<TextTaskEntity>, IEnumerable<TextTaskModel>>(text);
+
+        }
+        #endregion
     }
 }

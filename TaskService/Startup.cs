@@ -6,7 +6,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using TaskService.Repositories;
 using TaskService.Repositories.Contexts;
+using TaskService.Repositories.Interfaces;
+using TaskService.Repositories.Repositories;
+using TaskService.Services.Interfaces;
 using TaskService.Services.TaskEfService;
+using TaskService.Services.TextDapperService;
 
 namespace TaskService
 {
@@ -31,7 +35,14 @@ namespace TaskService
             services.AddTaskDbOption(Configuration);
             services.AddAutoMapper(typeof(Startup));
             services.AddTransient(typeof(TaskContext));
-            //services.AddTransient<ITaskEfService, TaskEfService>();
+
+            services.AddTransient<ITextTaskDapperRepository, TextTaskDapperRepository>();
+            services.AddTransient<ITextTaskEfRepository, TextTaskEfRepository>();
+            services.AddTransient<ITaskDapperRepository, TaskDapperRepository>();
+            services.AddTransient<ITaskEfRepository, TaskEfRepository>();
+
+            services.AddTransient<ITaskService, TaskDapperService>();
+            services.AddTransient<ITaskService, TaskEfService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

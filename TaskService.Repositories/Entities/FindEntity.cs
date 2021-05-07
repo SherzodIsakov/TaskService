@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace TaskService.Repositories.Entities
 {
-    public class FindEntity : BaseEntity
+    public class FindEntity
     {
-        public string FindValue { get; set; }
+        public Guid Id { get; set; } = new Guid();
+        public string FindWord { get; set; }
+        public TaskEntity TaskEntity { get; set; }
     }
 }

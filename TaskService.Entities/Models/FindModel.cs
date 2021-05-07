@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskService.Services.Models
+namespace TaskService.Entities.Models
 {
-    public class TextTaskModel
+    public class FindModel
     {
-        public string Name { get; set; }
+        public string FindWord { get; set; }
     }
 }
