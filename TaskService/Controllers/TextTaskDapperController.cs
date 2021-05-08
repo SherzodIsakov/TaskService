@@ -14,57 +14,33 @@ namespace TaskService.Controllers
     [ApiController]
     public class TextTaskDapperController : ControllerBase
     {
-        private readonly ITaskService _taskService;
+        private readonly ITextTaskService _textTaskService;
         private readonly ILogger<TextTaskDapperController> _logger;
 
-        public TextTaskDapperController(ITaskService taskService, ILogger<TextTaskDapperController> logger)
+        public TextTaskDapperController(ITextTaskService textTaskService, ILogger<TextTaskDapperController> logger)
         {
-            _taskService = taskService;
+            _textTaskService = textTaskService;
             _logger = logger;
         }
-
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TaskModel>> GetTaskById(Guid id)
-        {
-            var result = await _taskService.GetTaskByIdAsync(id);
-            return result;
-        }
-
-        [HttpGet]
-        public async Task<IEnumerable<TaskModel>> GetAllTask()
-        {
-            var result = await _taskService.GetAllTasksAsync();
-            return result;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<TaskModel>> Post(TaskModel taskModel)
-        {
-            var textFile = await _taskService.CreateTaskAsync(taskModel);
-            return new OkObjectResult(textFile);
-        }
-
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TextTaskModel>> GetTextTaskById(Guid id)
         {
-            var result = await _taskService.GetTextTaskByIdAsync(id);
+            var result = await _textTaskService.GetTextTaskByIdAsync(id);
             return result;
         }
 
         [HttpGet]
         public async Task<IEnumerable<TextTaskModel>> GetAllTextTask()
         {
-            var result = await _taskService.GetAllTextTasksAsync();
+            var result = await _textTaskService.GetAllTextTasksAsync();
             return result;
         }
 
         [HttpPost]
         public async Task<ActionResult<TaskModel>> Post(TextTaskModel textTaskModel)
         {
-            var textFile = await _taskService.CreateTextTaskAsync(textTaskModel);
+            var textFile = await _textTaskService.CreateTextTaskAsync(textTaskModel);
             return new OkObjectResult(textFile);
         }
     }

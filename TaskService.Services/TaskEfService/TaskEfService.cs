@@ -11,16 +11,13 @@ namespace TaskService.Services.TaskEfService
 {
     public class TaskEfService : ITaskService
     {
-        private readonly ITextTaskEfRepository _textTaskEfRepository;
         private readonly ITaskEfRepository _taskEfRepository;
         private readonly IMapper _mapper;
 
         public TaskEfService(
-            ITextTaskEfRepository textTaskEfRepository,
             ITaskEfRepository taskEfRepository,
             IMapper mapper)
         {
-            _textTaskEfRepository = textTaskEfRepository;
             _taskEfRepository = taskEfRepository;
             _mapper = mapper;
         }
@@ -28,15 +25,22 @@ namespace TaskService.Services.TaskEfService
         #region TaskModel Постановка задачи
         public async Task<TaskModel> CreateTaskAsync(TaskModel taskModel)
         {
+            var taskEntitys = _mapper.Map<IEnumerable<FindEntity>>(taskModel.FindModels);
             var taskEntity = new TaskEntity
             {
                 TaskStartTime = taskModel.TaskStartTime,
                 TaskEndTime = taskModel.TaskEndTime,
                 TaskInterval = taskModel.TaskInterval,
-                FindEntities = taskModel.FindEntities
+                FindEntities = taskEntitys
             };
             taskEntity = await _taskEfRepository.CreateAsync(taskEntity);
-            return _mapper.Map<TaskModel>(taskEntity);
+
+            var findModels = _mapper.Map<IEnumerable<FindModel>>(taskEntity.FindEntities);
+            var taskModelresult = _mapper.Map<TaskModel>(taskEntity);
+            taskModelresult.FindModels = findModels;
+
+            return taskModelresult;
+            // _mapper.Map<TaskModel>(taskEntity);
         }
         public async Task<TaskModel> GetTaskByIdAsync(Guid id)
         {
@@ -53,31 +57,5 @@ namespace TaskService.Services.TaskEfService
         }
         #endregion
 
-        #region TextTaskModel Результат поиска
-        public async Task<TextTaskModel> CreateTextTaskAsync(TextTaskModel textTaskModel)
-        {
-            var textTaskEntity = new TextTaskEntity
-            {
-                TaskId = textTaskModel.TaskId,
-                TextId = textTaskModel.TextId,
-                FindindWordsCount = textTaskModel.FindindWordsCount
-            };
-            textTaskEntity = await _textTaskEfRepository.CreateAsync(textTaskEntity);
-            return _mapper.Map<TextTaskModel>(textTaskEntity);
-        }
-        public async Task<TextTaskModel> GetTextTaskByIdAsync(Guid id)
-        {
-            var text = await _textTaskEfRepository.GetByIdAsync(id);
-
-            return _mapper.Map<TextTaskModel>(text);
-        }
-        public async Task<IEnumerable<TextTaskModel>> GetAllTextTasksAsync()
-        {
-            var text = await _textTaskEfRepository.GetAllAsync();
-
-            return _mapper.Map<IEnumerable<TextTaskEntity>, IEnumerable<TextTaskModel>>(text);
-
-        }
-        #endregion
     }
 }

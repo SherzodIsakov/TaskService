@@ -35,14 +35,13 @@ namespace TaskService
             services.AddTaskDbOption(Configuration);
             services.AddAutoMapper(typeof(Startup));
             services.AddTransient(typeof(TaskContext));
-
-            services.AddTransient<ITextTaskDapperRepository, TextTaskDapperRepository>();
+           
             services.AddTransient<ITextTaskEfRepository, TextTaskEfRepository>();
-            services.AddTransient<ITaskDapperRepository, TaskDapperRepository>();
-            services.AddTransient<ITaskEfRepository, TaskEfRepository>();
+            services.AddTransient<ITextTaskService, TextTaskEfService>();
 
-            services.AddTransient<ITaskService, TaskDapperService>();
+            services.AddTransient<ITaskEfRepository, TaskEfRepository>();            
             services.AddTransient<ITaskService, TaskEfService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
