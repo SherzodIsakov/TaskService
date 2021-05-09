@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TaskService.Entities.Models;
 using TaskService.Repositories.Entities;
@@ -53,6 +54,15 @@ namespace TaskService.Services.TextDapperService
             var text = await _taskDapperRepository.GetAllAsync();
 
             return _mapper.Map<IEnumerable<TaskEntity>, IEnumerable<TaskModel>>(text);
+
+        }
+        public async Task<TaskModel> GetFirstTasksAsync()
+        {
+            var texts = await _taskDapperRepository.GetAllAsync();
+
+            var text = texts.OrderBy(x => x.CreatedDate).FirstOrDefault();
+
+            return _mapper.Map<TaskEntity, TaskModel>(text);
 
         }
         #endregion       

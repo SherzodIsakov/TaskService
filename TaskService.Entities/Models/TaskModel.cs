@@ -1,10 +1,11 @@
-﻿using System;
+﻿using RepositoryBase.Entities;
+using System;
 using System.Collections.Generic;
 using TaskService.Repositories.Entities;
 
 namespace TaskService.Entities.Models
 {
-    public class TaskModel
+    public class TaskModel : BaseEntity
     {
         public int TaskInterval { get; set; } = 10;
         public DateTime TaskStartTime { get; set; } = DateTime.Now;

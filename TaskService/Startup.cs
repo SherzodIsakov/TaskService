@@ -1,3 +1,4 @@
+using FindService.Client.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +9,7 @@ using TaskService.Repositories;
 using TaskService.Repositories.Contexts;
 using TaskService.Repositories.Interfaces;
 using TaskService.Repositories.Repositories;
+using TaskService.Services.BackgroundServices;
 using TaskService.Services.Interfaces;
 using TaskService.Services.TaskEfService;
 using TaskService.Services.TextDapperService;
@@ -33,14 +35,17 @@ namespace TaskService
             });
 
             services.AddTaskDbOption(Configuration);
+            services.AddFindServiceClient(Configuration);
+
             services.AddAutoMapper(typeof(Startup));
             services.AddTransient(typeof(TaskContext));
-           
+            services.AddHostedService<TaskWorker>();
+
             services.AddTransient<ITextTaskEfRepository, TextTaskEfRepository>();
             services.AddTransient<ITextTaskService, TextTaskEfService>();
 
             services.AddTransient<ITaskEfRepository, TaskEfRepository>();            
-            services.AddTransient<ITaskService, TaskEfService>();
+            services.AddTransient<ITaskService, TaskEfService>();           
 
         }
 

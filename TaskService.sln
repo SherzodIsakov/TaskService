@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryBase", "..\Reposi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskService.Services", "TaskService.Services\TaskService.Services.csproj", "{B7FB7E5C-1A2F-4B06-B286-DF769726E9BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService.Entities", "TaskService.Entities\TaskService.Entities.csproj", "{5F8CCBA4-C410-461E-A9D1-9E21D6A46459}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskService.Entities", "TaskService.Entities\TaskService.Entities.csproj", "{5F8CCBA4-C410-461E-A9D1-9E21D6A46459}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindService.Client", "..\FindService\FindService.Client\FindService.Client.csproj", "{1C4EBB95-D6C7-45DC-9752-60FBF50848E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{5F8CCBA4-C410-461E-A9D1-9E21D6A46459}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F8CCBA4-C410-461E-A9D1-9E21D6A46459}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F8CCBA4-C410-461E-A9D1-9E21D6A46459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C4EBB95-D6C7-45DC-9752-60FBF50848E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C4EBB95-D6C7-45DC-9752-60FBF50848E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C4EBB95-D6C7-45DC-9752-60FBF50848E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C4EBB95-D6C7-45DC-9752-60FBF50848E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,9 @@ using TaskService.Entities.Models;
 
 namespace TaskService.Services.Interfaces
 {
+    /// <summary>
+    /// Результат выполнения задачи 
+    /// </summary>
     public interface ITextTaskService
     {
         Task<TextTaskModel> CreateTextTaskAsync(TextTaskModel textTaskModel);

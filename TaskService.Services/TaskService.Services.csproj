@@ -13,9 +13,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\FindService\FindService.Client\FindService.Client.csproj" />
     <ProjectReference Include="..\TaskService.Entities\TaskService.Entities.csproj" />
     <ProjectReference Include="..\TaskService.Repositories\TaskService.Repositories.csproj" />
   </ItemGroup>
