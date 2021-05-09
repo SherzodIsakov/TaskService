@@ -23,22 +23,21 @@ namespace TaskService.Services.TaskEfService
             _mapper = mapper;
         }
 
-        #region TaskModel Постановка задачи
         public async Task<TaskModel> CreateTaskAsync(TaskModel taskModel)
         {
-            var taskEntitys = _mapper.Map<IEnumerable<FindEntity>>(taskModel.FindModels);
+            var taskEntitys = _mapper.Map<IEnumerable<TaskSearchWordsEntity>>(taskModel.TaskSearchWordsModels);
             var taskEntity = new TaskEntity
             {
                 TaskStartTime = taskModel.TaskStartTime,
                 TaskEndTime = taskModel.TaskEndTime,
                 TaskInterval = taskModel.TaskInterval,
-                FindEntities = taskEntitys
+                TaskSearchWordsEntities = taskEntitys
             };
             taskEntity = await _taskEfRepository.CreateAsync(taskEntity);
 
-            var findModels = _mapper.Map<IEnumerable<FindModel>>(taskEntity.FindEntities);
+            var findModels = _mapper.Map<IEnumerable<TaskSearchWordsModel>>(taskEntity.TaskSearchWordsEntities);
             var taskModelresult = _mapper.Map<TaskModel>(taskEntity);
-            taskModelresult.FindModels = findModels;
+            taskModelresult.TaskSearchWordsModels = findModels;
 
             return taskModelresult;
             // _mapper.Map<TaskModel>(taskEntity);
@@ -65,7 +64,5 @@ namespace TaskService.Services.TaskEfService
             return _mapper.Map<TaskEntity, TaskModel>(text);
 
         }
-        #endregion
-
     }
 }

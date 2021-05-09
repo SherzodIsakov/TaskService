@@ -22,7 +22,6 @@ namespace TaskService.Services.TaskEfService
             _mapper = mapper;
         }
 
-        #region TextTaskModel Результат поиска
         public async Task<TextTaskModel> CreateTextTaskAsync(TextTaskModel textTaskModel)
         {
             var textTaskEntity = new TextTaskEntity
@@ -47,6 +46,5 @@ namespace TaskService.Services.TaskEfService
             return _mapper.Map<IEnumerable<TextTaskEntity>, IEnumerable<TextTaskModel>>(text);
 
         }
-        #endregion
     }
 }

@@ -9,6 +9,6 @@ namespace TaskService.Repositories.Entities
         public int TaskInterval { get; set; } = 20;
         public DateTime TaskStartTime { get; set; } = DateTime.Now;
         public DateTime TaskEndTime { get; set; } = DateTime.Now.AddHours(2);
-        public IEnumerable<FindEntity> FindEntities { get; set; }
+        public IEnumerable<TaskSearchWordsEntity>  TaskSearchWordsEntities { get; set; }
     }
 }

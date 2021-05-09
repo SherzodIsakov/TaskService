@@ -19,25 +19,6 @@ namespace TaskService.Repositories.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TaskService.Repositories.Entities.FindEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FindWord")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("TaskEntityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskEntityId");
-
-                    b.ToTable("FindEntities");
-                });
-
             modelBuilder.Entity("TaskService.Repositories.Entities.TaskEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -71,6 +52,25 @@ namespace TaskService.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TaskEntities");
+                });
+
+            modelBuilder.Entity("TaskService.Repositories.Entities.TaskSearchWordsEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FindWord")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("TaskEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskEntityId");
+
+                    b.ToTable("FindEntities");
                 });
 
             modelBuilder.Entity("TaskService.Repositories.Entities.TextTaskEntity", b =>
@@ -108,10 +108,10 @@ namespace TaskService.Repositories.Migrations
                     b.ToTable("TextTaskEntities");
                 });
 
-            modelBuilder.Entity("TaskService.Repositories.Entities.FindEntity", b =>
+            modelBuilder.Entity("TaskService.Repositories.Entities.TaskSearchWordsEntity", b =>
                 {
                     b.HasOne("TaskService.Repositories.Entities.TaskEntity", "TaskEntity")
-                        .WithMany("FindEntities")
+                        .WithMany("TaskSearchWordsEntities")
                         .HasForeignKey("TaskEntityId");
 
                     b.Navigation("TaskEntity");
@@ -119,7 +119,7 @@ namespace TaskService.Repositories.Migrations
 
             modelBuilder.Entity("TaskService.Repositories.Entities.TaskEntity", b =>
                 {
-                    b.Navigation("FindEntities");
+                    b.Navigation("TaskSearchWordsEntities");
                 });
 #pragma warning restore 612, 618
         }

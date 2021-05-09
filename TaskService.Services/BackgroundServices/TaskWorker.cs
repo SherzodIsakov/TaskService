@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TaskService.Entities.Models;
@@ -68,9 +67,7 @@ namespace TaskService.Services.BackgroundServices
             GetTaskModel = null;
         }
 
-        #region DoWork
-
-       
+        #region DoWork       
         public void DoWork(object state)
         {
             var count = Interlocked.Increment(ref executionCount);
@@ -84,7 +81,7 @@ namespace TaskService.Services.BackgroundServices
                 if (allNewFiles is not null && allNewFiles.Count() > 0)
                 {
                     //Слова для поиска
-                    string[] words = GetTaskModel.FindModels.Select(x => x.FindWord).ToArray();
+                    string[] words = GetTaskModel.TaskSearchWordsModels.Select(x => x.FindWord).ToArray();
 
                     foreach (var item in allNewFiles)
                     {
@@ -99,7 +96,7 @@ namespace TaskService.Services.BackgroundServices
 
                         _iTextTaskService.CreateTextTaskAsync(textTaskModel).Wait();
                     }
-                }                
+                }
             }
             else
             {
@@ -110,9 +107,9 @@ namespace TaskService.Services.BackgroundServices
 
         //Если нет задач добавть новую задачу 
         private async Task GetOrCreateTaskAsync()
-        { 
+        {
             //Слова по умолчанию если нет задачи в базе
-            FindModel[] words = { new FindModel { FindWord = "Hello" }, new FindModel { FindWord = "World" } };
+            TaskSearchWordsModel[] words = { new TaskSearchWordsModel { FindWord = "Hello" }, new TaskSearchWordsModel { FindWord = "World" } };
 
             GetTaskModel = await _iTaskService.GetFirstTasksAsync();
             if (GetTaskModel is null)
@@ -129,7 +126,7 @@ namespace TaskService.Services.BackgroundServices
         /// <param name="interval"></param>
         /// <param name="findWords"></param>
         /// <returns></returns>
-        public async Task<TaskModel> AddNewTask(DateTime startDate, DateTime endDate, int interval, FindModel[] findWords)
+        public async Task<TaskModel> AddNewTask(DateTime startDate, DateTime endDate, int interval, TaskSearchWordsModel[] findWords)
         {
             var taskModel = new TaskModel
             {
@@ -137,7 +134,7 @@ namespace TaskService.Services.BackgroundServices
                 TaskStartTime = startDate,
                 TaskEndTime = endDate,
                 TaskInterval = interval,
-                FindModels = findWords
+                TaskSearchWordsModels = findWords
             };
 
             return await _iTaskService.CreateTaskAsync(taskModel);

@@ -10,17 +10,17 @@ namespace TaskService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TextTaskEfController : ControllerBase
+    public class TextTaskServiceController : ControllerBase
     {
         private readonly ITextTaskService _taskService;
-        private readonly ILogger<TextTaskEfController> _logger;
+        private readonly ILogger<TextTaskServiceController> _logger;
 
-        public TextTaskEfController(ITextTaskService taskService, ILogger<TextTaskEfController> logger)
+        public TextTaskServiceController(ITextTaskService taskService, ILogger<TextTaskServiceController> logger)
         {
             _taskService = taskService;
             _logger = logger;
         }
-       
+
         [HttpGet("GetTextTaskById/{id}")]
         public async Task<ActionResult<TextTaskModel>> GetTextTaskById(Guid id)
         {
@@ -36,7 +36,7 @@ namespace TaskService.Controllers
         }
 
         [HttpPost("textTask")]
-        public async Task<ActionResult<TaskModel>> PostTextTask([FromForm]TextTaskModel textTaskModel)
+        public async Task<ActionResult<TaskModel>> PostTextTask([FromForm] TextTaskModel textTaskModel)
         {
             var textFile = await _taskService.CreateTextTaskAsync(textTaskModel);
             return new OkObjectResult(textFile);

@@ -7,7 +7,7 @@ namespace TaskService.Repositories.Contexts
     public class TaskContext : DbContext
     {
         private readonly IOptions<TaskDbOption> _taskDbOptions;
-        public DbSet<FindEntity>  FindEntities { get; set; }
+        public DbSet<TaskSearchWordsEntity>  FindEntities { get; set; }
         public DbSet<TaskEntity>   TaskEntities { get; set; }
         public DbSet<TextTaskEntity> TextTaskEntities { get; set; }
 

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace TaskService.Entities.Models
 {
-    public class FindModel
+    public class TaskSearchWordsModel
     {
+        public Guid Id { get; set; }
         public string FindWord { get; set; }
+        public TaskModel TaskModel { get; set; }
     }
 }

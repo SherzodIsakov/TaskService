@@ -2,7 +2,7 @@
 
 namespace TaskService.Repositories.Entities
 {
-    public class FindEntity
+    public class TaskSearchWordsEntity
     {
         public Guid Id { get; set; } = new Guid();
         public string FindWord { get; set; }
