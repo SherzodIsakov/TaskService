@@ -70,7 +70,7 @@ namespace TaskService.Repositories.Migrations
 
                     b.HasIndex("TaskEntityId");
 
-                    b.ToTable("FindEntities");
+                    b.ToTable("TaskSearchWordsEntities");
                 });
 
             modelBuilder.Entity("TaskService.Repositories.Entities.TextTaskEntity", b =>

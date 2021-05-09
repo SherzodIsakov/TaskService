@@ -10,8 +10,8 @@ using TaskService.Repositories.Contexts;
 namespace TaskService.Repositories.Migrations
 {
     [DbContext(typeof(TaskContext))]
-    [Migration("20210507153433_1")]
-    partial class _1
+    [Migration("20210509153257_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,25 +20,6 @@ namespace TaskService.Repositories.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("TaskService.Repositories.Entities.FindEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FindWord")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("TaskEntityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskEntityId");
-
-                    b.ToTable("FindEntities");
-                });
 
             modelBuilder.Entity("TaskService.Repositories.Entities.TaskEntity", b =>
                 {
@@ -73,6 +54,25 @@ namespace TaskService.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TaskEntities");
+                });
+
+            modelBuilder.Entity("TaskService.Repositories.Entities.TaskSearchWordsEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FindWord")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("TaskEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskEntityId");
+
+                    b.ToTable("TaskSearchWordsEntities");
                 });
 
             modelBuilder.Entity("TaskService.Repositories.Entities.TextTaskEntity", b =>
@@ -110,10 +110,10 @@ namespace TaskService.Repositories.Migrations
                     b.ToTable("TextTaskEntities");
                 });
 
-            modelBuilder.Entity("TaskService.Repositories.Entities.FindEntity", b =>
+            modelBuilder.Entity("TaskService.Repositories.Entities.TaskSearchWordsEntity", b =>
                 {
                     b.HasOne("TaskService.Repositories.Entities.TaskEntity", "TaskEntity")
-                        .WithMany("FindEntities")
+                        .WithMany("TaskSearchWordsEntities")
                         .HasForeignKey("TaskEntityId");
 
                     b.Navigation("TaskEntity");
@@ -121,7 +121,7 @@ namespace TaskService.Repositories.Migrations
 
             modelBuilder.Entity("TaskService.Repositories.Entities.TaskEntity", b =>
                 {
-                    b.Navigation("FindEntities");
+                    b.Navigation("TaskSearchWordsEntities");
                 });
 #pragma warning restore 612, 618
         }
