@@ -35,7 +35,7 @@ namespace TaskService.Controllers
             return result;
         }
 
-        [HttpPost("textTask")]
+        [HttpPost("TextTask")]
         public async Task<ActionResult<TaskModel>> PostTextTask([FromForm] TextTaskModel textTaskModel)
         {
             var textFile = await _taskService.CreateTextTaskAsync(textTaskModel);
