@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskService.Repositories.Contexts;
 
-namespace TaskService.Repositories.Migrations
+namespace TaskService.Repositories.Migrations.SqlMigrations
 {
     [DbContext(typeof(TaskContext))]
     [Migration("20210509153257_Init")]

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TaskService.Repositories.Migrations
+namespace TaskService.Repositories.Migrations.SqlMigrations
 {
     public partial class Init : Migration
     {

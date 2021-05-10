@@ -5,17 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System.Net.Http;
 using TaskService.Repositories;
 using TaskService.Repositories.Contexts;
 using TaskService.Repositories.Interfaces;
-using TaskService.Repositories.Repositories;
 using TaskService.Repositories.Repositories.EfPostgreRepository;
 using TaskService.Services.BackgroundServices;
 using TaskService.Services.Interfaces;
-using TaskService.Services.TaskDapperService;
 using TaskService.Services.TaskEfService;
-using TaskService.Services.TextDapperService;
 
 namespace TaskService
 {
@@ -35,12 +31,9 @@ namespace TaskService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskService", Version = "v1" });
             });
-
-            services.AddTaskDbOption(Configuration);
+           
             services.AddFindServiceClient(Configuration);
-
-            services.AddAutoMapper(typeof(Startup));
-            services.AddTransient(typeof(TaskContext));
+            services.AddAutoMapper(typeof(Startup));            
             services.AddHostedService<TaskWorker>();
 
             #region Dapper
@@ -53,16 +46,20 @@ namespace TaskService
 
             #region Ef
             #region SQL
+            //services.AddSqlTaskDbOption(Configuration);
+            //services.AddTransient(typeof(TaskContext));
             //services.AddTransient<ITextTaskEfRepository, TextTaskEfRepository>();
             //services.AddTransient<ITaskEfRepository, TaskEfRepository>();
             #endregion
 
             #region Postgre
+            services.AddPostgreTaskDbOption(Configuration);
+            services.AddTransient(typeof(TaskPostgreContext));
             services.AddTransient<ITextTaskEfRepository, TextTaskEfPostgreRepository>();
             services.AddTransient<ITaskEfRepository, TaskEfPostgreRepository>();
             #endregion
 
-            services.AddTransient<ITextTaskService, TextTaskEfService>();           
+            services.AddTransient<ITextTaskService, TextTaskEfService>();
             services.AddTransient<ITaskService, TaskEfService>();
             #endregion
         }

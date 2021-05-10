@@ -21,21 +21,21 @@ namespace TaskService.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetTextTaskById/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<TextTaskModel>> GetTextTaskById(Guid id)
         {
             var result = await _taskService.GetTextTaskByIdAsync(id);
             return result;
         }
 
-        [HttpGet("GetAllTextTask")]
+        [HttpGet]
         public async Task<IEnumerable<TextTaskModel>> GetAllTextTask()
         {
             var result = await _taskService.GetAllTextTasksAsync();
             return result;
         }
 
-        [HttpPost("TextTask")]
+        [HttpPost("texttask")]
         public async Task<ActionResult<TaskModel>> PostTextTask([FromForm] TextTaskModel textTaskModel)
         {
             var textFile = await _taskService.CreateTextTaskAsync(textTaskModel);

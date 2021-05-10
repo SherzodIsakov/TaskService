@@ -5,10 +5,16 @@ namespace TaskService.Repositories
 {
     public static class TaskDbOptionExtension
     {
-        public static void AddTaskDbOption(this IServiceCollection services, IConfiguration configuration)
+        public static void AddSqlTaskDbOption(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<TaskDbOption>(options =>
-                options.ConnectionString = configuration.GetConnectionString("Default"));
+                options.ConnectionString = configuration.GetConnectionString("SqlConnection"));
+        }
+
+        public static void AddPostgreTaskDbOption(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<TaskDbOption>(options =>
+                options.ConnectionString = configuration.GetConnectionString("PostgreConnection"));
         }
     }
 }

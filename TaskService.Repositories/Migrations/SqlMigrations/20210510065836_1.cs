@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TaskService.Repositories.Migrations
+namespace TaskService.Repositories.Migrations.SqlMigrations
 {
     public partial class _1 : Migration
     {
