@@ -1,9 +1,11 @@
 ﻿using RepositoryBase.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskService.Repositories.Entities
 {
+    [Table("TaskEntity")]
     public class TaskEntity : BaseEntity
     {
         public int TaskInterval { get; set; } = 20;

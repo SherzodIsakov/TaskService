@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.Net.Http;
 using TaskService.Repositories;
 using TaskService.Repositories.Contexts;
 using TaskService.Repositories.Interfaces;
@@ -44,8 +45,8 @@ namespace TaskService
             services.AddTransient<ITextTaskEfRepository, TextTaskEfRepository>();
             services.AddTransient<ITextTaskService, TextTaskEfService>();
 
-            services.AddTransient<ITaskEfRepository, TaskEfRepository>();            
-            services.AddTransient<ITaskService, TaskEfService>();           
+            services.AddTransient<ITaskEfRepository, TaskEfRepository>();
+            services.AddTransient<ITaskService, TaskEfService>();
 
         }
 

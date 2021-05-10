@@ -20,7 +20,8 @@ namespace TaskService.Services.BackgroundServices
         private readonly ILogger<TaskWorker> _logger;
         private int executionCount = 0;
         private Timer _timer;
-        //Задача
+
+        //Задача из базы
         TaskModel GetTaskModel = null;
         public TaskWorker(IFindClient iFindClient, ITaskService iTaskService, ITextTaskService iTextTaskService, ILogger<TaskWorker> logger)
         {
@@ -39,23 +40,23 @@ namespace TaskService.Services.BackgroundServices
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
+                //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+
+                var timeSpan = GetTaskModel.TaskEndTime.Subtract(GetTaskModel.TaskStartTime);
+                await Task.Delay(timeSpan, stoppingToken);
             }
         }
         public override Task StartAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Timed Hosted Service running.");
+            // _logger.LogInformation("Timed Hosted Service running.");           
 
-            var timeSpan = GetTaskModel.TaskEndTime.Subtract(GetTaskModel.TaskStartTime);
-
-            _timer = new Timer(DoWork, null, timeSpan, TimeSpan.FromMinutes(GetTaskModel.TaskInterval));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(GetTaskModel.TaskInterval));
 
             return Task.CompletedTask;
         }
         public override Task StopAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Timed Hosted Service is stopping.");
+            // _logger.LogInformation("Timed Hosted Service is stopping.");
 
             _timer?.Change(Timeout.Infinite, 0);
 
@@ -68,44 +69,53 @@ namespace TaskService.Services.BackgroundServices
         }
 
         #region DoWork       
-        public void DoWork(object state)
+        private void DoWork(object state)
         {
-            var count = Interlocked.Increment(ref executionCount);
-            _logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
-
-            if (GetTaskModel is not null)
+            try
             {
-                //Поиск новых файлов
-                var allNewFiles = _iFindClient.GetAllTexts().Result.Where(x => DateTime.Now.Subtract(x.CreatedDate).Minutes >= GetTaskModel.TaskInterval);
+                //var count = Interlocked.Increment(ref executionCount);
+                //_logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
 
-                if (allNewFiles is not null && allNewFiles.Count() > 0)
+                if (GetTaskModel is not null)
                 {
-                    //Слова для поиска
-                    string[] words = GetTaskModel.TaskSearchWordsModels.Select(x => x.FindWord).ToArray();
+                    //Поиск новых файлов
+                    var allNewFiles1 = _iFindClient.GetAllTexts().Result;
+                    var allNewFiles = allNewFiles1.Where(x => DateTime.Now.Subtract(x.CreatedDate).Minutes >= GetTaskModel.TaskInterval);
 
-                    foreach (var item in allNewFiles)
+                    if (allNewFiles is not null && allNewFiles.Count() > 0)
                     {
-                        var findWords = _iFindClient.FindWords(item.Id, words).Result;
+                        //Слова для поиска
+                        string[] words = GetTaskModel.TaskSearchWordsModels.Select(x => x.FindWord).ToArray();
 
-                        var textTaskModel = new TextTaskModel
+                        foreach (var item in allNewFiles)
                         {
-                            TaskId = GetTaskModel.Id,
-                            TextId = item.Id,
-                            FindindWordsCount = findWords.Count(),
-                        };
+                            var findWords = _iFindClient.FindWords(item.Id, words).Result;
 
-                        _iTextTaskService.CreateTextTaskAsync(textTaskModel).Wait();
+                            var textTaskModel = new TextTaskModel
+                            {
+                                TaskId = GetTaskModel.Id,
+                                TextId = item.Id,
+                                FindindWordsCount = findWords.Count(),
+                            };
+
+                            _iTextTaskService.CreateTextTaskAsync(textTaskModel).Wait();
+                        }
                     }
                 }
+                else
+                {
+                    //Получени данных для задачи
+                    GetOrCreateTaskAsync().Wait();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                //Получени данных для задачи
-                GetOrCreateTaskAsync().Wait();
+
+                throw;
             }
         }
 
-        //Если нет задач добавть новую задачу 
+        //Если нет задач добавляем новую 
         private async Task GetOrCreateTaskAsync()
         {
             //Слова по умолчанию если нет задачи в базе

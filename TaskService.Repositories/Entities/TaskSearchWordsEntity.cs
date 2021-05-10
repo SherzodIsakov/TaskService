@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskService.Repositories.Entities
 {
+    [Table("TaskSearchWordsEntity")]
     public class TaskSearchWordsEntity
     {
         public Guid Id { get; set; } = new Guid();
