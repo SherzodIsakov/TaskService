@@ -18,7 +18,7 @@ namespace TaskService.Services.BackgroundServices
         private readonly ITextTaskService _iTextTaskService;
 
         private readonly ILogger<TaskWorker> _logger;
-        private int executionCount = 0;
+        //private int executionCount = 0;
         private Timer _timer;
 
         //Задача из базы

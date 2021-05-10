@@ -10,8 +10,10 @@ using TaskService.Repositories;
 using TaskService.Repositories.Contexts;
 using TaskService.Repositories.Interfaces;
 using TaskService.Repositories.Repositories;
+using TaskService.Repositories.Repositories.EfPostgreRepository;
 using TaskService.Services.BackgroundServices;
 using TaskService.Services.Interfaces;
+using TaskService.Services.TaskDapperService;
 using TaskService.Services.TaskEfService;
 using TaskService.Services.TextDapperService;
 
@@ -28,7 +30,6 @@ namespace TaskService
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -42,12 +43,28 @@ namespace TaskService
             services.AddTransient(typeof(TaskContext));
             services.AddHostedService<TaskWorker>();
 
-            services.AddTransient<ITextTaskEfRepository, TextTaskEfRepository>();
-            services.AddTransient<ITextTaskService, TextTaskEfService>();
+            #region Dapper
+            //services.AddTransient<ITextTaskDapperRepository, TextTaskDapperRepository>();
+            //services.AddTransient<ITaskDapperRepository, TaskDapperRepository>();
 
-            services.AddTransient<ITaskEfRepository, TaskEfRepository>();
+            //services.AddTransient<ITextTaskService, TextTaskDapperService>();
+            //services.AddTransient<ITaskService, TaskDapperService>();
+            #endregion
+
+            #region Ef
+            #region SQL
+            //services.AddTransient<ITextTaskEfRepository, TextTaskEfRepository>();
+            //services.AddTransient<ITaskEfRepository, TaskEfRepository>();
+            #endregion
+
+            #region Postgre
+            services.AddTransient<ITextTaskEfRepository, TextTaskEfPostgreRepository>();
+            services.AddTransient<ITaskEfRepository, TaskEfPostgreRepository>();
+            #endregion
+
+            services.AddTransient<ITextTaskService, TextTaskEfService>();           
             services.AddTransient<ITaskService, TaskEfService>();
-
+            #endregion
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

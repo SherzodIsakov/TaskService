@@ -8,7 +8,7 @@ using TaskService.Repositories.Entities;
 using TaskService.Repositories.Interfaces;
 using TaskService.Services.Interfaces;
 
-namespace TaskService.Services.TextDapperService
+namespace TaskService.Services.TaskDapperService
 {
     public class TaskDapperService : ITaskService
     {

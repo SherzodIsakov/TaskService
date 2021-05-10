@@ -8,7 +8,7 @@ namespace TaskService.Repositories.Repositories
 {
     public class TaskEfRepository : BaseEfRepository<TaskEntity>, ITaskEfRepository
     {
-        public TaskEfRepository(IOptions<TaskDbOption> dbOption, TaskContext textContext) : base(dbOption, textContext)
+        public TaskEfRepository(IOptions<TaskDbOption> dbOption, TaskContext context) : base(dbOption, context)
         {
         }
     }
