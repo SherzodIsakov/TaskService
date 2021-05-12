@@ -11,10 +11,14 @@ namespace TaskService.Client.Configuration
     {
         public static IServiceCollection AddTaskServiceClient(this IServiceCollection services, IConfiguration configuration)
         {
-            services.TryAddTransient(_ => RestService.For<ITaskClient>(new HttpClient(
-                new HttpClientHandler{ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true})
+            services.TryAddTransient(_ => RestService.For<ITaskClient>(
+                new HttpClient
+                (
+                    new HttpClientHandler{ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true}
+                )
                 {
-                    BaseAddress = new Uri(configuration["ServiceUrls:TaskService"])
+                    BaseAddress = new Uri(configuration["ServiceUrls:TaskService"]),
+                    Timeout = TimeSpan.FromMinutes(5)
                 }));
 
             return services;

@@ -8,23 +8,23 @@ namespace TaskService.Client
 {
     public interface ITaskClient
     {
-        [Get("/taskservice/{id}")]
+        [Get("/api/taskservice/{id}")]
         Task<TaskModel> GetTaskById(Guid id);
 
-        [Get("/taskservice")]
+        [Get("/api/taskservice")]
         Task<TaskModel> GetAllTask();
 
-        [Post("/taskservice/task")]
+        [Post("/api/taskservice/task")]
         Task<TaskModel> Post(TaskModel taskModel);
 
 
-        [Get("/texttaskservice/{id}")]
+        [Get("/api/texttaskservice/{id}")]
         Task<TextTaskModel> GetTextTaskById(Guid id);
        
-        [Get("/texttaskservice")]
+        [Get("/api/texttaskservice")]
         Task<TextTaskModel> GetAllTextTask();
        
-        [Post("/texttaskservice/texttask")]
+        [Post("/api/texttaskservice/texttask")]
         Task<TextTaskModel> Post(TextTaskModel textTaskModel);
     }
 }
