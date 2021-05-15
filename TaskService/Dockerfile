@@ -8,11 +8,11 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["TaskService/TaskService.csproj", "TaskService/"]
+COPY ["../AuthenticationBase/AuthenticationBase/AuthenticationBase.csproj", "../AuthenticationBase/AuthenticationBase/"]
 COPY ["TaskService.Entities/TaskService.Entities.csproj", "TaskService.Entities/"]
 COPY ["TaskService.Repositories/TaskService.Repositories.csproj", "TaskService.Repositories/"]
 COPY ["../RepositoryBase/RepositoryBase/RepositoryBase.csproj", "../RepositoryBase/RepositoryBase/"]
 COPY ["../FindService/FindService.Client/FindService.Client.csproj", "../FindService/FindService.Client/"]
-COPY ["../RepositoryBase/AuthenticationBase/AuthenticationBase.csproj", "../RepositoryBase/AuthenticationBase/"]
 COPY ["TaskService.Services/TaskService.Services.csproj", "TaskService.Services/"]
 RUN dotnet restore "TaskService/TaskService.csproj"
 COPY . .
