@@ -1,3 +1,4 @@
+using AuthenticationBase.Extensions;
 using FindService.Client.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +27,7 @@ namespace TaskService
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAppAuthentication(Configuration);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -77,6 +79,7 @@ namespace TaskService
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
