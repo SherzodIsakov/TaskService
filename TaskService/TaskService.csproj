@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\AuthenticationBase\AuthenticationBase\AuthenticationBase.csproj" />
     <ProjectReference Include="..\..\FindService\FindService.Client\FindService.Client.csproj" />
+    <ProjectReference Include="..\TaskService.Client\TaskService.Client.csproj" />
     <ProjectReference Include="..\TaskService.Entities\TaskService.Entities.csproj" />
     <ProjectReference Include="..\TaskService.Repositories\TaskService.Repositories.csproj" />
     <ProjectReference Include="..\TaskService.Services\TaskService.Services.csproj" />

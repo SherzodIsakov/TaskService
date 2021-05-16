@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using TaskService.Client.Configuration;
 using TaskService.Repositories;
 using TaskService.Repositories.Contexts;
 using TaskService.Repositories.Interfaces;
@@ -27,14 +28,16 @@ namespace TaskService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppAuthentication(Configuration);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskService", Version = "v1" });
             });
-           
-            services.AddFindServiceClient(Configuration);
+
+            services.AddAppAuthentication(Configuration);
+            services.AddFindServiceTokenClient(Configuration);
+            //services.AddFindServiceClient(Configuration);
+
             services.AddAutoMapper(typeof(Startup));            
             services.AddHostedService<TaskWorker>();
 

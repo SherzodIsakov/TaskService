@@ -12,6 +12,6 @@ namespace TaskService.Services.Interfaces
     {
         Task<TextTaskModel> CreateTextTaskAsync(TextTaskModel textTaskModel);
         Task<TextTaskModel> GetTextTaskByIdAsync(Guid id);
-        Task<IEnumerable<TextTaskModel>> GetAllTextTasksAsync();
+        Task<IEnumerable<TextTaskModel>> GetAllTextTasksAsync(); //string token
     }
 }

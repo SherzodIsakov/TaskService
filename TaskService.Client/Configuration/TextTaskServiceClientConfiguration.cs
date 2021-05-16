@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AuthenticationBase.Extensions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Refit;
@@ -23,7 +24,12 @@ namespace TaskService.Client.Configuration
 
             return services;
         }
+        public static IServiceCollection AddTaskServiceTokenClient(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddApiClient<ITaskClient>(configuration, new RefitSettings(), "ServiceUrls:TaskService");
 
+            return services;
+        }
 
     }
 }

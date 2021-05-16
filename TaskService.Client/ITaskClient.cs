@@ -12,7 +12,7 @@ namespace TaskService.Client
         Task<TaskModel> GetTaskById(Guid id);
 
         [Get("/api/taskservice")]
-        Task<TaskModel> GetAllTask();
+        Task<TaskModel> GetAllTask(); //[Header("Authorization")] string token
 
         [Post("/api/taskservice/task")]
         Task<TaskModel> Post(TaskModel taskModel);
