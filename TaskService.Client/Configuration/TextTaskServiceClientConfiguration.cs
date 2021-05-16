@@ -15,7 +15,7 @@ namespace TaskService.Client.Configuration
             services.TryAddTransient(_ => RestService.For<ITaskClient>(
                 new HttpClient
                 (
-                    new HttpClientHandler{ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true}
+                    new HttpClientHandler { ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true }
                 )
                 {
                     BaseAddress = new Uri(configuration["ServiceUrls:TaskService"]),
@@ -30,6 +30,5 @@ namespace TaskService.Client.Configuration
 
             return services;
         }
-
     }
 }

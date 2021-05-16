@@ -1,4 +1,5 @@
-﻿using FindService.Client;
+﻿using AuthenticationService.Client;
+using FindService.Client;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,7 +19,6 @@ namespace TaskService.Services.BackgroundServices
         private readonly ITextTaskService _iTextTaskService;
 
         private readonly ILogger<TaskWorker> _logger;
-        //private int executionCount = 0;
         private Timer _timer;
 
         //Задача из базы
@@ -40,24 +40,18 @@ namespace TaskService.Services.BackgroundServices
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-
                 var timeSpan = GetTaskModel.TaskEndTime.Subtract(GetTaskModel.TaskStartTime);
                 await Task.Delay(timeSpan, stoppingToken);
             }
         }
         public override Task StartAsync(CancellationToken stoppingToken)
         {
-            // _logger.LogInformation("Timed Hosted Service running.");           
-
             _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(GetTaskModel.TaskInterval));
 
             return Task.CompletedTask;
         }
         public override Task StopAsync(CancellationToken stoppingToken)
         {
-            // _logger.LogInformation("Timed Hosted Service is stopping.");
-
             _timer?.Change(Timeout.Infinite, 0);
 
             return Task.CompletedTask;
@@ -73,8 +67,7 @@ namespace TaskService.Services.BackgroundServices
         {
             try
             {
-                //var count = Interlocked.Increment(ref executionCount);
-                //_logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
+                //var token = GetToken(new LoginModel { Username = "user", Password = "QweAsd123!" }).Result;
 
                 if (GetTaskModel is not null)
                 {
@@ -114,6 +107,20 @@ namespace TaskService.Services.BackgroundServices
                 throw;
             }
         }
+
+        //private async Task<string> GetToken(LoginModel loginModel)
+        //{
+        //    string token = string.Empty;
+        //    ObjectResult objectResult = await _authenticationClient.Login(loginModel);
+
+        //    if (objectResult != null)
+        //    {
+        //        LoginResponse loginResponse = objectResult.Value as LoginResponse;
+        //        token = loginResponse.Token;
+        //    }
+
+        //    return string.IsNullOrWhiteSpace(token) ? "Error token" : token;
+        //}
 
         //Если нет задач добавляем новую 
         private async Task GetOrCreateTaskAsync()

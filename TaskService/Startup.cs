@@ -1,4 +1,5 @@
 using AuthenticationBase.Extensions;
+using AuthenticationService.Client.Configuration;
 using FindService.Client.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,15 +29,16 @@ namespace TaskService
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAppAuthentication(Configuration);
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskService", Version = "v1" });
-            });
+            });            
+            //services.AddFindServiceTokenClient(Configuration);
+            services.AddFindServiceGetTokenClient(Configuration);
 
-            services.AddAppAuthentication(Configuration);
-            services.AddFindServiceTokenClient(Configuration);
-            //services.AddFindServiceClient(Configuration);
 
             services.AddAutoMapper(typeof(Startup));            
             services.AddHostedService<TaskWorker>();
