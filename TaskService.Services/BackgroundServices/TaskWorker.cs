@@ -1,5 +1,4 @@
-﻿using AuthenticationService.Client;
-using FindService.Client;
+﻿using FindService.Client;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;

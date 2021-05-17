@@ -1,5 +1,4 @@
 using AuthenticationBase.Extensions;
-using AuthenticationService.Client.Configuration;
 using FindService.Client.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,12 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using TaskService.Client.Configuration;
 using TaskService.Repositories;
 using TaskService.Repositories.Contexts;
 using TaskService.Repositories.Interfaces;
 using TaskService.Repositories.Repositories;
-using TaskService.Repositories.Repositories.EfPostgreRepository;
 using TaskService.Services.BackgroundServices;
 using TaskService.Services.Interfaces;
 using TaskService.Services.TaskEfService;
@@ -36,12 +33,12 @@ namespace TaskService
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskService", Version = "v1" });
-            });            
+            });
             //services.AddFindServiceTokenClient(Configuration);
             services.AddFindServiceStaticTokenClient(Configuration);
 
 
-            services.AddAutoMapper(typeof(Startup));            
+            services.AddAutoMapper(typeof(Startup));
             services.AddHostedService<TaskWorker>();
 
             #region Dapper
