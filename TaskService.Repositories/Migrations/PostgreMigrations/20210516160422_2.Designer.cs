@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskService.Repositories.Contexts;
@@ -9,9 +10,10 @@ using TaskService.Repositories.Contexts;
 namespace TaskService.Repositories.Migrations.PostgreMigrations
 {
     [DbContext(typeof(TaskPostgreContext))]
-    partial class TaskPostgreContextModelSnapshot : ModelSnapshot
+    [Migration("20210516160422_2")]
+    partial class _2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

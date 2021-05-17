@@ -44,7 +44,6 @@ namespace TaskService.Services.TaskEfService
             var text = await _textTaskEfRepository.GetAllAsync();
 
             return _mapper.Map<IEnumerable<TextTaskEntity>, IEnumerable<TextTaskModel>>(text);
-
         }
     }
 }

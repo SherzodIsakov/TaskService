@@ -25,22 +25,17 @@ namespace TaskService.Services.TaskEfService
 
         public async Task<TaskModel> CreateTaskAsync(TaskModel taskModel)
         {
-            var taskEntitys = _mapper.Map<IEnumerable<TaskSearchWordsEntity>>(taskModel.TaskSearchWordsModels);
             var taskEntity = new TaskEntity
             {
                 TaskStartTime = taskModel.TaskStartTime,
                 TaskEndTime = taskModel.TaskEndTime,
                 TaskInterval = taskModel.TaskInterval,
-                TaskSearchWordsEntities = taskEntitys
+                TaskSearchWords = taskModel.TaskSearchWords
             };
             taskEntity = await _taskEfRepository.CreateAsync(taskEntity);
 
-            var findModels = _mapper.Map<IEnumerable<TaskSearchWordsModel>>(taskEntity.TaskSearchWordsEntities);
             var taskModelresult = _mapper.Map<TaskModel>(taskEntity);
-            taskModelresult.TaskSearchWordsModels = findModels;
-
-            return taskModelresult;
-            // _mapper.Map<TaskModel>(taskEntity);
+            return taskModelresult; 
         }
         public async Task<TaskModel> GetTaskByIdAsync(Guid id)
         {
@@ -62,7 +57,6 @@ namespace TaskService.Services.TaskEfService
             var text = texts.OrderBy(x => x.CreatedDate).FirstOrDefault();
 
             return _mapper.Map<TaskEntity, TaskModel>(text);
-
         }
     }
 }

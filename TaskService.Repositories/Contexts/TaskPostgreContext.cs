@@ -7,7 +7,6 @@ namespace TaskService.Repositories.Contexts
     public class TaskPostgreContext : DbContext
     {
         private readonly IOptions<TaskDbOption> _taskDbOptions;
-        public DbSet<TaskSearchWordsEntity> TaskSearchWordsEntities { get; set; }
         public DbSet<TaskEntity> TaskEntities { get; set; }
         public DbSet<TextTaskEntity> TextTaskEntities { get; set; }
 

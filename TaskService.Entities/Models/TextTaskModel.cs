@@ -3,7 +3,7 @@ using System;
 
 namespace TaskService.Entities.Models
 {
-    public class TextTaskModel //: BaseEntity
+    public class TextTaskModel
     {
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }

@@ -8,7 +8,6 @@ namespace TaskService.Configuration
     {
         public AutoMapping()
         {
-            CreateMap<TaskSearchWordsEntity, TaskSearchWordsModel>().ReverseMap();
             CreateMap<TaskEntity, TaskModel>().ReverseMap();
             CreateMap<TextTaskEntity, TextTaskModel>().ReverseMap();
         }

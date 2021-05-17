@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TaskService.Entities.Models;
 using TaskService.Services.Interfaces;
+using TextService.Entities.Models;
 
 namespace TaskService.Services.BackgroundServices
 {
@@ -67,22 +68,23 @@ namespace TaskService.Services.BackgroundServices
         {
             try
             {
-                //var token = GetToken(new LoginModel { Username = "user", Password = "QweAsd123!" }).Result;
-
                 if (GetTaskModel is not null)
                 {
                     //Поиск новых файлов
-                    var allNewFiles1 = _iFindClient.GetAllTexts().Result;
-                    var allNewFiles = allNewFiles1.Where(x => DateTime.Now.Subtract(x.CreatedDate).Minutes >= GetTaskModel.TaskInterval);
+                    var allFiles = _iFindClient.GetAllTexts().Result;
+                    var allNewFiles = allFiles.Where(x => DateTime.Now.Subtract(x.CreatedDate).Minutes >= GetTaskModel.TaskInterval).ToList();
+                    var qwe = allNewFiles.Count();
+
 
                     if (allNewFiles is not null && allNewFiles.Count() > 0)
                     {
                         //Слова для поиска
-                        string[] words = GetTaskModel.TaskSearchWordsModels.Select(x => x.FindWord).ToArray();
+                        string[] words = GetTaskModel.TaskSearchWords.Split(" ");
 
                         foreach (var item in allNewFiles)
                         {
-                            var findWords = _iFindClient.FindWords(item.Id, words).Result;
+                            var textArray = item.Text.Replace('\r', ' ').Replace('\n', ' ').Replace("  ", " ").Split(" ");
+                            var findWords = textArray.SelectMany(e => words.Where(x => x == e));
 
                             var textTaskModel = new TextTaskModel
                             {
@@ -108,25 +110,11 @@ namespace TaskService.Services.BackgroundServices
             }
         }
 
-        //private async Task<string> GetToken(LoginModel loginModel)
-        //{
-        //    string token = string.Empty;
-        //    ObjectResult objectResult = await _authenticationClient.Login(loginModel);
-
-        //    if (objectResult != null)
-        //    {
-        //        LoginResponse loginResponse = objectResult.Value as LoginResponse;
-        //        token = loginResponse.Token;
-        //    }
-
-        //    return string.IsNullOrWhiteSpace(token) ? "Error token" : token;
-        //}
-
         //Если нет задач добавляем новую 
         private async Task GetOrCreateTaskAsync()
         {
             //Слова по умолчанию если нет задачи в базе
-            TaskSearchWordsModel[] words = { new TaskSearchWordsModel { FindWord = "Hello" }, new TaskSearchWordsModel { FindWord = "World" } };
+            string words = "Hello World";
 
             GetTaskModel = await _iTaskService.GetFirstTasksAsync();
             if (GetTaskModel is null)
@@ -143,7 +131,7 @@ namespace TaskService.Services.BackgroundServices
         /// <param name="interval"></param>
         /// <param name="findWords"></param>
         /// <returns></returns>
-        public async Task<TaskModel> AddNewTask(DateTime startDate, DateTime endDate, int interval, TaskSearchWordsModel[] findWords)
+        public async Task<TaskModel> AddNewTask(DateTime startDate, DateTime endDate, int interval, string findWords)
         {
             var taskModel = new TaskModel
             {
@@ -151,7 +139,7 @@ namespace TaskService.Services.BackgroundServices
                 TaskStartTime = startDate,
                 TaskEndTime = endDate,
                 TaskInterval = interval,
-                TaskSearchWordsModels = findWords
+                TaskSearchWords = findWords
             };
 
             return await _iTaskService.CreateTaskAsync(taskModel);
@@ -162,7 +150,7 @@ namespace TaskService.Services.BackgroundServices
         /// </summary>
         /// <param name="word"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<TextService.Entities.Models.TextModel>> FindWords(string word)
+        public async Task<IEnumerable<TextModel>> FindWords(string word)
         {
             if (!string.IsNullOrEmpty(word))
             {

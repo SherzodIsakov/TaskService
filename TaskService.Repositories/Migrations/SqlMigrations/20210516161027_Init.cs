@@ -8,13 +8,14 @@ namespace TaskService.Repositories.Migrations.SqlMigrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "TaskEntities",
+                name: "TaskEntity",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TaskInterval = table.Column<int>(type: "int", nullable: false),
                     TaskStartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TaskEndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TaskSearchWords = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastSavedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -23,11 +24,11 @@ namespace TaskService.Repositories.Migrations.SqlMigrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TaskEntities", x => x.Id);
+                    table.PrimaryKey("PK_TaskEntity", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TextTaskEntities",
+                name: "TextTaskEntity",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -42,44 +43,17 @@ namespace TaskService.Repositories.Migrations.SqlMigrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TextTaskEntities", x => x.Id);
+                    table.PrimaryKey("PK_TextTaskEntity", x => x.Id);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "TaskSearchWordsEntities",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FindWord = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TaskEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TaskSearchWordsEntities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TaskSearchWordsEntities_TaskEntities_TaskEntityId",
-                        column: x => x.TaskEntityId,
-                        principalTable: "TaskEntities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskSearchWordsEntities_TaskEntityId",
-                table: "TaskSearchWordsEntities",
-                column: "TaskEntityId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TaskSearchWordsEntities");
+                name: "TaskEntity");
 
             migrationBuilder.DropTable(
-                name: "TextTaskEntities");
-
-            migrationBuilder.DropTable(
-                name: "TaskEntities");
+                name: "TextTaskEntity");
         }
     }
 }

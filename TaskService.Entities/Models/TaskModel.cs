@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TaskService.Entities.Models
 {
-    public class TaskModel //: BaseEntity
+    public class TaskModel
     {
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -13,6 +13,6 @@ namespace TaskService.Entities.Models
         public int TaskInterval { get; set; } = 10;
         public DateTime TaskStartTime { get; set; } = DateTime.Now;
         public DateTime TaskEndTime { get; set; } = DateTime.Now.AddHours(2);
-        public IEnumerable<TaskSearchWordsModel> TaskSearchWordsModels { get; set; }
+        public string TaskSearchWords { get; set; }
     }
 }
