@@ -7,16 +7,21 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["TaskService/TaskService.csproj", "TaskService/"]
-COPY ["../AuthenticationBase/AuthenticationBase/AuthenticationBase.csproj", "../AuthenticationBase/AuthenticationBase/"]
-COPY ["TaskService.Entities/TaskService.Entities.csproj", "TaskService.Entities/"]
-COPY ["TaskService.Repositories/TaskService.Repositories.csproj", "TaskService.Repositories/"]
-COPY ["../RepositoryBase/RepositoryBase/RepositoryBase.csproj", "../RepositoryBase/RepositoryBase/"]
-COPY ["../FindService/FindService.Client/FindService.Client.csproj", "../FindService/FindService.Client/"]
-COPY ["TaskService.Services/TaskService.Services.csproj", "TaskService.Services/"]
-RUN dotnet restore "TaskService/TaskService.csproj"
-COPY . .
-WORKDIR "/src/TaskService"
+
+COPY ./TaskService ./TaskService
+COPY ./AuthenticationBase ./AuthenticationBase
+COPY ./RepositoryBase ./RepositoryBase
+
+COPY ./FindService/FindService.Services ./FindService/FindService.Services
+COPY ./FindService/FindService.Client ./FindService/FindService.Client
+
+COPY ./TextService/TextService.Repositories ./TextService/TextService.Repositories
+COPY ./TextService/TextService.Services ./TextService/TextService.Services
+COPY ./TextService/TextService.Entities ./TextService/TextService.Entities
+COPY ./TextService/TextService.Client ./TextService/TextService.Client
+
+WORKDIR ./TaskService/TaskService
+RUN dotnet restore "TaskService.csproj"
 RUN dotnet build "TaskService.csproj" -c Release -o /app/build
 
 FROM build AS publish
